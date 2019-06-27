@@ -54,6 +54,7 @@ public class Home {
 	JTable tablePatient;
 	DefaultTableModel modelPatient;
 	JScrollPane scrollPanePatient;
+	
 	JTable doctorTable;
 	DefaultTableModel modelDoctor;
 	JScrollPane scrollPaneDoctor;
@@ -66,12 +67,9 @@ public class Home {
 	DefaultTableModel historyModel;
 	
 	private ArrayList<Integer> arrayPatientID = new ArrayList<Integer>();
-	private String signalOfPatient;
+	
 	private JButton btnRefresh;
 	
-	private String firstName;
-	private String lastName;
-	private String date;
 	private JLabel lblNewLabel;
 	
 	
@@ -88,7 +86,7 @@ public class Home {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Home window = new Home("getAllPatients");
+					Home window = new Home();
 					window.getFrame().setVisible(true);
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -100,21 +98,9 @@ public class Home {
 	/**
 	 * Create the application.
 	 */
-	public Home(String signal) {
-		this.signalOfPatient = signal;
+	
+	public Home() {
 		initialize();
-	}
-	public Home(String signal,String firstName,String lastName) {
-		this.signalOfPatient = signal;
-		this.firstName=firstName;
-		this.lastName= lastName;
-		initialize();	
-	}
-	public Home(String signal,String date) {
-		this.signalOfPatient = signal;
-		this.date=date;
-		initialize();
-		
 	}
 
 	/**
@@ -212,7 +198,7 @@ public class Home {
 		lblWelcome.setBounds(10, 11, 164, 30);
 		sidebar.add(lblWelcome);
 		
-		 historylb = new JLabel("Hostory");
+		 historylb = new JLabel("History");
 		 historylb.addMouseListener(new MouseAdapter() {
 		 	@Override
 		 	public void mouseClicked(MouseEvent arg0) {
@@ -250,8 +236,8 @@ public class Home {
 		lblListOfPatients.setBounds(21, 11, 289, 30);
 		patient.add(lblListOfPatients);
 	
-		 btnCreatePatient = new JButton("Add");
-		 btnCreatePatient.setForeground(new Color(255, 255, 255));
+		btnCreatePatient = new JButton("Add");
+		btnCreatePatient.setForeground(new Color(255, 255, 255));
 		btnCreatePatient.setBackground(new Color(0, 0, 255));
 		btnCreatePatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -297,13 +283,15 @@ public class Home {
 					FormCreatePatient formCreatePatient = new FormCreatePatient(patient);
 					formCreatePatient.getFramePatientForm().setVisible(true);
 					
+					//Pass the references to other Object in order to be accessed in that Object
 					formCreatePatient.setModelPatient(modelPatient);
+					formCreatePatient.setModelReceipt(modelReceipt);
 					formCreatePatient.setIndexTable(rowNumber);
 					
 					formCreatePatient.getPatient_id().setText(patient.getId()+"");
 					formCreatePatient.getFirstName().setText(patient.getFirstName());
 					formCreatePatient.getLastName().setText(patient.getLastName());
-					formCreatePatient.getGender().setText(patient.getGender());
+					formCreatePatient.getGenderP().setSelectedItem(patient.getGender());
 					formCreatePatient.getAge().setText(patient.getAge()+"");
 					formCreatePatient.getPhoneNumberP().setText(patient.getPhone());
 					
@@ -339,20 +327,14 @@ public class Home {
 		tablePatient.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tablePatient.getColumnModel().getColumn(4).setPreferredWidth(50);
 		tablePatient.getColumnModel().getColumn(5).setPreferredWidth(200);
-		tablePatient.getColumnModel().getColumn(6).setPreferredWidth(160);
+		tablePatient.getColumnModel().getColumn(6).setPreferredWidth(157);
 		
 		
 		try {
 			databaseP= new DatabasePatient();
 			databaseP.setModelPatient(modelPatient);
-			switch (getSignalOfPatient()) {
-				case "getAllPatients":
-					databaseP.getAllPatients();
-					System.out.println("In the getAllPatients Block");
-					break;
-				default:
-					break;
-			}
+			databaseP.getAllPatients();
+			System.out.println("In the getAllPatients Block");
 			databaseP.closeConnection();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -368,7 +350,7 @@ public class Home {
 				try {
 					getFrame().dispose();
 					getBtnCreatePatient().setVisible(true);
-					Home home= new Home("getAllPatients");
+					Home home= new Home();
 					databaseP= new DatabasePatient();
 					databaseP.getPatientID().clear();
 					databaseP.closeConnection();
@@ -607,13 +589,6 @@ public class Home {
 		this.frmHospitalManagementSysytem = frame;
 	}
 
-	public String getSignalOfPatient() {
-		return signalOfPatient;
-	}
-
-	public void setSignalOfPatient(String signal) {
-		this.signalOfPatient = signal;
-	}
 
 	public JButton getBtnCreatePatient() {
 		return btnCreatePatient;

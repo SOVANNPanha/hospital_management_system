@@ -36,7 +36,6 @@ public class FormCreatePatient {
 	private JFrame framePatientForm;
 	private JTextField firstNameP;
 	private JTextField lastNameP;
-	private JTextField genderP;
 	private JTextField ageP;
 	private JTextField villegeP;
 	private JTextField communeP;
@@ -46,6 +45,7 @@ public class FormCreatePatient {
 	private JTextField patient_id;
 	private JComboBox doctor_id;
 	private JComboBox roomP;
+	private JComboBox genderP;
 	private JTextField phoneNumberP;
 	private JTextArea descriptionA;
 	private JButton btnCreatePatient;
@@ -135,12 +135,6 @@ public class FormCreatePatient {
 		lblGe.setBounds(38, 189, 80, 25);
 		framePatientForm.getContentPane().add(lblGe);
 		
-		genderP = new JTextField();
-		genderP.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		genderP.setColumns(10);
-		genderP.setBounds(38, 214, 130, 30);
-		framePatientForm.getContentPane().add(genderP);
-		
 		JLabel label = new JLabel(" Age");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		label.setBounds(211, 189, 80, 25);
@@ -210,7 +204,7 @@ public class FormCreatePatient {
 		 btnCreatePatient = new JButton("Create");
 		btnCreatePatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {		
-				if(patient_id.getText().isEmpty() || firstNameP.getText().isEmpty() || lastNameP.getText().isEmpty() || genderP.getText().isEmpty() || ageP.getText().isEmpty() || phoneNumberP.getText().isEmpty() || doctor_id.getSelectedItem().toString().isEmpty() ||  roomP.getSelectedItem().toString().isEmpty() ) {
+				if(patient_id.getText().isEmpty() || firstNameP.getText().isEmpty() || lastNameP.getText().isEmpty() || genderP.getSelectedItem().toString().isEmpty() || ageP.getText().isEmpty() || phoneNumberP.getText().isEmpty() || doctor_id.getSelectedItem().toString().isEmpty() ||  roomP.getSelectedItem().toString().isEmpty() ) {
 					JOptionPane.showMessageDialog(null, "Please fill the Information");
 				}else {
 					try {
@@ -218,7 +212,7 @@ public class FormCreatePatient {
 						int pid=Integer.parseInt(patient_id.getText());
 						String firstName= firstNameP.getText();
 						String lastName= lastNameP.getText();
-						String gender=genderP.getText();
+						String gender=genderP.getSelectedItem().toString();
 						int age=Integer.parseInt(ageP.getText());
 						String phone=phoneNumberP.getText();
 						
@@ -301,7 +295,7 @@ public class FormCreatePatient {
 									modelPatient.setValueAt(patient_id.getText(), indexTable, 0);
 									modelPatient.setValueAt(firstNameP.getText(), indexTable, 1);
 									modelPatient.setValueAt(lastNameP.getText(), indexTable, 2);
-									modelPatient.setValueAt(genderP.getText(), indexTable, 3);
+									modelPatient.setValueAt(genderP.getSelectedItem().toString(), indexTable, 3);
 									modelPatient.setValueAt(ageP.getText(), indexTable, 4);
 									modelPatient.setValueAt(phoneNumberP.getText(), indexTable, 6);
 									databasePatient.closeConnection();
@@ -413,6 +407,7 @@ public class FormCreatePatient {
 				//Create a record in Receipt table
 				DatabaseReceipt databaseReceipt= new DatabaseReceipt();
 				databaseReceipt.createRecord(reciept);
+				databaseReceipt.addLastReceipt(modelReceipt);
 				Patient patientGet= databaseReceipt.getReceipt(patient_id);
 				
 				
@@ -458,7 +453,7 @@ public class FormCreatePatient {
 					searchID=patient.getId();
 					firstNameP.setText(patient.getFirstName());
 					lastNameP.setText(patient.getLastName());
-					genderP.setText(patient.getGender());
+					genderP.setSelectedItem(patient.getGender());
 					ageP.setText(patient.getAge()+"");
 					phoneNumberP.setText(patient.getPhone());
 					villegeP.setText(patient.getAddress().getVillege());
@@ -472,9 +467,9 @@ public class FormCreatePatient {
 				}
 			}
 		});
-		btnSearchID.setForeground(Color.BLACK);
+		btnSearchID.setForeground(new Color(255, 255, 255));
 		btnSearchID.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnSearchID.setBackground(Color.WHITE);
+		btnSearchID.setBackground(new Color(0, 0, 255));
 		btnSearchID.setBounds(178, 77, 100, 30);
 		framePatientForm.getContentPane().add(btnSearchID);
 		
@@ -482,14 +477,20 @@ public class FormCreatePatient {
 		 doctor_id = new JComboBox(databaseDoctor.getActiveDoctorID());
 		 doctor_id.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		databaseDoctor.closeConnection();
-		doctor_id.setBounds(361, 78, 130, 30);
+		doctor_id.setBounds(361, 78, 130, 25);
 		framePatientForm.getContentPane().add(doctor_id);
 		
 		String[] room= {"R001","R002","R003","R004","ACU"};
 		 roomP = new JComboBox(room);
 		roomP.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		roomP.setBounds(361, 147, 130, 30);
+		roomP.setBounds(361, 147, 130, 25);
 		framePatientForm.getContentPane().add(roomP);
+		
+		String[] genderValues= {"Male","Female"};
+		 genderP = new JComboBox(genderValues);
+		genderP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		genderP.setBounds(38, 213, 130, 25);
+		framePatientForm.getContentPane().add(genderP);
 
 	}
 	public JFrame getFramePatientForm() {
@@ -510,12 +511,7 @@ public class FormCreatePatient {
 	public void setLastName(JTextField lastName) {
 		this.lastNameP = lastName;
 	}
-	public JTextField getGender() {
-		return genderP;
-	}
-	public void setGender(JTextField gender) {
-		this.genderP = gender;
-	}
+
 	public JTextField getAge() {
 		return ageP;
 	}
@@ -633,13 +629,9 @@ public class FormCreatePatient {
 	public void setArrayPatientID(ArrayList<Integer> arrayPatientID) {
 		this.arrayPatientID = arrayPatientID;
 	}
-
-
 	public JComboBox getDoctor_id() {
 		return doctor_id;
 	}
-
-
 	public void setDoctor_id(JComboBox doctor_id) {
 		this.doctor_id = doctor_id;
 	}
@@ -648,6 +640,12 @@ public class FormCreatePatient {
 	}
 	public void setRoomP(JComboBox roomP) {
 		this.roomP = roomP;
+	}
+	public JComboBox getGenderP() {
+		return genderP;
+	}
+	public void setGenderP(JComboBox genderP) {
+		this.genderP = genderP;
 	}
 	
 }

@@ -84,6 +84,41 @@ public class DatabaseReceipt extends Database{
 		
 		return rid;
 	}
+	//get the last receipt record to store in the JTableReceipt
+	public void addLastReceipt(DefaultTableModel modelReceipt) {
+		try {
+			try {
+				String[] row= new String[7];
+				String query= "SELECT r.*,p.first_name,p.last_name FROM patients AS p JOIN receipts AS r ON p.id = r.patient_id ORDER BY r.id desc";
+				Statement statement= super.getConnection().createStatement();
+				ResultSet results= statement.executeQuery(query);
+				while(results.next()) {
+					results.last();
+					int id= results.getInt(1);
+					int patient_id=results.getInt(2);
+					Timestamp date_in= results.getTimestamp(3);
+					Timestamp date_out= results.getTimestamp(4);
+					String price= results.getString(5);
+					String firstName= results.getString(6);
+					String lastName= results.getString(7);
+					
+					
+					row[0]= id+"";
+					row[1]=patient_id+"";
+					row[2]=firstName+"  "+lastName;
+					row[3]=date_in +"";
+					row[4]=date_out+"";
+					row[5]=price;
+					modelReceipt.addRow(row);
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+	}
 	//Get A record from receipt and patient table
 	@SuppressWarnings("null")
 	public Patient getReceipt(int patient_id) {

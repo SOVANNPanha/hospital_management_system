@@ -88,7 +88,7 @@ public class Login {
 				
 				if(user.equals("admin") && pass.equals("admin")) {
 					try {
-						Home window = new Home("getAllPatients");
+						Home window = new Home();
 						window.getFrame().setVisible(true);
 						frame.dispose();
 					} catch (Exception e2) {
