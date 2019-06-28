@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -23,12 +22,9 @@ import database.DatabasePatient;
 import database.DatabasePatientRecords;
 import database.DatabaseReceipt;
 
-import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -37,7 +33,7 @@ import javax.swing.border.LineBorder;
 
 public class Home {
 
-	private JFrame frmHospitalManagementSysytem;
+	private JFrame formHospitalManagementSysytem;
 	JPanel patient;
 	JLabel patienOption;
 	JPanel doctor;
@@ -107,12 +103,12 @@ public class Home {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmHospitalManagementSysytem = new JFrame();
-		frmHospitalManagementSysytem.setTitle("Hospital Management System");
-		frmHospitalManagementSysytem.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
-		frmHospitalManagementSysytem.setBounds(100, 100, 1200, 600);
-		frmHospitalManagementSysytem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmHospitalManagementSysytem.getContentPane().setLayout(null);
+		formHospitalManagementSysytem = new JFrame();
+		formHospitalManagementSysytem.setTitle("Hospital Management System");
+		formHospitalManagementSysytem.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		formHospitalManagementSysytem.setBounds(100, 100, 1200, 600);
+		formHospitalManagementSysytem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		formHospitalManagementSysytem.getContentPane().setLayout(null);
 	
 		
 		
@@ -122,7 +118,7 @@ public class Home {
 		sidebar.setBackground(new Color(64, 224, 208));
 		sidebar.setForeground(Color.BLACK);
 		sidebar.setBounds(0, 0, 184, 561);
-		frmHospitalManagementSysytem.getContentPane().add(sidebar);
+		formHospitalManagementSysytem.getContentPane().add(sidebar);
 		sidebar.setLayout(null);
 		
 		 patienOption = new JLabel("Hospitalized Patients");
@@ -227,7 +223,7 @@ public class Home {
 		patient.setBackground(new Color(64, 224, 208));
 		patient.setBorder(new LineBorder(new Color(0, 0, 0)));
 		patient.setBounds(184, 0, 1000, 561);
-		frmHospitalManagementSysytem.getContentPane().add(patient);
+		formHospitalManagementSysytem.getContentPane().add(patient);
 		patient.setLayout(null);
 		
 		JLabel lblListOfPatients = new JLabel("List of Hospitalized Patients");
@@ -327,7 +323,7 @@ public class Home {
 		tablePatient.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tablePatient.getColumnModel().getColumn(4).setPreferredWidth(50);
 		tablePatient.getColumnModel().getColumn(5).setPreferredWidth(200);
-		tablePatient.getColumnModel().getColumn(6).setPreferredWidth(157);
+		tablePatient.getColumnModel().getColumn(6).setPreferredWidth(160);
 		
 		
 		try {
@@ -365,13 +361,13 @@ public class Home {
 		btnRefresh.setBackground(new Color(255, 255, 255));
 		btnRefresh.setBounds(856, 11, 125, 30);
 		patient.add(btnRefresh);
-//	//End of Block PatientOption	
-//	//Block doctorOption 
+	//End of Block PatientOption	
+	//Block doctorOption 
 		doctor = new JPanel();
 		doctor.setBackground(new Color(64, 224, 208));
 		doctor.setBorder(new LineBorder(new Color(0, 0, 0)));
 		doctor.setBounds(184, 0, 1000, 561);
-		frmHospitalManagementSysytem.getContentPane().add(doctor);
+		formHospitalManagementSysytem.getContentPane().add(doctor);
 		doctor.setLayout(null);
 		
 		JButton addDoctorbtn;
@@ -442,7 +438,7 @@ public class Home {
 		doctorTable.setBackground(Color.WHITE);
 		
 		String[] columnDoctor= {"ID","First Name","Last Name","Gender","Age","Skill","Status"};
-		 modelDoctor= new DefaultTableModel();
+		modelDoctor= new DefaultTableModel();
 		doctorTable.setModel(modelDoctor);
 		modelDoctor.setColumnIdentifiers(columnDoctor);
 		try {
@@ -463,7 +459,7 @@ public class Home {
 		receipts.setBackground(new Color(64, 224, 208));
 		receipts.setBorder(new LineBorder(new Color(0, 0, 0)));
 		receipts.setBounds(184, 0, 1000, 561);
-		frmHospitalManagementSysytem.getContentPane().add(receipts);
+		formHospitalManagementSysytem.getContentPane().add(receipts);
 		receipts.setLayout(null);
 		
 		lblNewLabel = new JLabel("Receipt List");
@@ -471,8 +467,8 @@ public class Home {
 		lblNewLabel.setBounds(21, 11, 200, 34);
 		receipts.add(lblNewLabel);
 		
-		 receiptTable= new JTable();
-		 receiptTable.addMouseListener(new MouseAdapter() {
+		receiptTable= new JTable();
+		receiptTable.addMouseListener(new MouseAdapter() {
 			@Override
 		 	public void mouseClicked(MouseEvent arg0) {
 		 		int rowNumber= receiptTable.getSelectedRow();
@@ -504,7 +500,7 @@ public class Home {
 		receiptTable.setBackground(Color.WHITE);
 		
 		String[] column= {"ID","Patient ID","Name","Date in","Date out","Prix"};
-		 modelReceipt= new DefaultTableModel();
+		modelReceipt= new DefaultTableModel();
 		receiptTable.setModel(modelReceipt);
 		modelReceipt.setColumnIdentifiers(column);
 		try {
@@ -515,16 +511,16 @@ public class Home {
 			System.out.println(e);
 		}
 		
-		 scrollPaneReceipt = new JScrollPane(receiptTable);
+		scrollPaneReceipt = new JScrollPane(receiptTable);
 		scrollPaneReceipt.setBounds(21, 100, 968, 478);
 		receipts.add(scrollPaneReceipt);
 	//End of Receipt Block
-		//Block of History block
+	//Block of History block
 		historyPanel = new JPanel();
 		historyPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		historyPanel.setBackground(new Color(64, 224, 208));
 		historyPanel.setBounds(184, 0, 1000, 561);
-		frmHospitalManagementSysytem.getContentPane().add(historyPanel);
+		formHospitalManagementSysytem.getContentPane().add(historyPanel);
 		historyPanel.setLayout(null);
 		
 		
@@ -582,11 +578,11 @@ public class Home {
 
 	}
 	public JFrame getFrame() {
-		return frmHospitalManagementSysytem;
+		return formHospitalManagementSysytem;
 	}
 
 	public void setFrame(JFrame frame) {
-		this.frmHospitalManagementSysytem = frame;
+		this.formHospitalManagementSysytem = frame;
 	}
 
 
@@ -599,11 +595,11 @@ public class Home {
 	}
 
 	public JFrame getFrmHospitalManagementSysytem() {
-		return frmHospitalManagementSysytem;
+		return formHospitalManagementSysytem;
 	}
 
 	public void setFrmHospitalManagementSysytem(JFrame frmHospitalManagementSysytem) {
-		this.frmHospitalManagementSysytem = frmHospitalManagementSysytem;
+		this.formHospitalManagementSysytem = frmHospitalManagementSysytem;
 	}
 
 	public ArrayList<Integer> getArrayPatientID() {

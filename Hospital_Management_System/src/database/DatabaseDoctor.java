@@ -61,7 +61,7 @@ public class DatabaseDoctor extends Database {
 			pStatement.setString(4,doctor.getGender());
 			pStatement.setInt(5,doctor.getAge());
 			pStatement.setString(6,doctor.getSkill());
-			pStatement.setString(6,"active");
+			pStatement.setString(7,"active");
 			if(pStatement.executeUpdate() > 0) {
 				isCreated = true;
 				String[] row= new String[6];
